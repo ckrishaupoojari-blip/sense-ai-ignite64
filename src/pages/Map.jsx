@@ -3,7 +3,7 @@ import { collection, getDocs } from 'firebase/firestore'
 import { db } from '../firebase'
 import { MapContainer, TileLayer, CircleMarker, Popup } from 'react-leaflet'
 
-const GEMINI_API_KEY = 'TEMP_KEY'
+const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY
 
 function getRiskColor(score) {
   if (score >= 70) return '#ef4444'
@@ -65,7 +65,7 @@ export default function Map() {
         }
       )
       const data = await response.json()
-      const text = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Unable to generate brief.'
+      const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '⚠️ AI brief temporarily unavailable due to rate limiting. The Gemini free tier allows 15 requests/minute. Please wait 60 seconds and try again.'
       setBrief(text)
     } catch (error) {
      setBrief('AI brief temporarily unavailable due to rate limiting. The Gemini API free tier allows 15 requests/minute. Please wait 60 seconds and try again.')
