@@ -46,6 +46,37 @@ export default function Map() {
     return true
   })
 
+  const generateRuleBasedBrief = (b) => {
+    const reasons = []
+    if (b.noc_status === 'expired') {
+      reasons.push(`its fire NOC has been expired for ${Math.abs(b.noc_expiry_days)} days, meaning it is operating without current fire department clearance`)
+    } else if (b.noc_status === 'applied') {
+      reasons.push('its fire NOC renewal is still pending approval')
+    }
+    if (!b.sprinkler_present) {
+      reasons.push('it has no active sprinkler system, which significantly increases fire spread speed in an emergency')
+    }
+    if (b.age_years > 40) {
+      reasons.push(`at ${b.age_years} years old, its electrical wiring and structural materials likely predate modern fire safety codes`)
+    }
+    if (b.complaints_last_3yrs > 4) {
+      reasons.push(`it has accumulated ${b.complaints_last_3yrs} safety complaints in the last 3 years, indicating a pattern of unresolved risk`)
+    }
+    if (b.construction_type === 'brick') {
+      reasons.push('its brick construction offers less fire resistance than modern RCC structures')
+    }
+
+    const reasonText = reasons.length > 0
+      ? reasons.slice(0, 3).join('; ')
+      : 'it shows no major compliance red flags based on available records'
+
+    const networkNote = b.risk_score >= 70
+      ? `In a fire scenario at this building, expect rapid network congestion as occupants and bystanders simultaneously attempt emergency calls — communication infrastructure should be assumed unreliable within the first 5-10 minutes.`
+      : `Network infrastructure risk during an emergency here is comparatively lower given the building's profile, but redundant communication channels remain advisable.`
+
+    return `This building carries a risk score of ${b.risk_score}/100, primarily because ${reasonText}. ${networkNote} Recommended action: ${b.risk_score >= 70 ? 'schedule an immediate inspection and prioritize NOC renewal' : 'continue routine monitoring per standard inspection cycle'}.`
+  }
+
   const generateBrief = async (building) => {
     setLoadingBrief(true)
     setBrief('')
@@ -65,10 +96,15 @@ export default function Map() {
         }
       )
       const data = await response.json()
-      const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '⚠️ AI brief temporarily unavailable due to rate limiting. The Gemini free tier allows 15 requests/minute. Please wait 60 seconds and try again.'
-      setBrief(text)
+      const text = data.candidates?.[0]?.content?.parts?.[0]?.text
+
+      if (text) {
+        setBrief(text)
+      } else {
+        setBrief(generateRuleBasedBrief(building))
+      }
     } catch (error) {
-     setBrief('AI brief temporarily unavailable due to rate limiting. The Gemini API free tier allows 15 requests/minute. Please wait 60 seconds and try again.')
+      setBrief(generateRuleBasedBrief(building))
     }
     setLoadingBrief(false)
   }
