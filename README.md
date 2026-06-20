@@ -1,16 +1,40 @@
-# React + Vite
+# 🔥 SenseAI — Emergency Communication Resilience Platform
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Live Application:** https://sense-ai-ignite64.vercel.app/
 
-Currently, two official plugins are available:
+Built for **IGNITE64 Global AI Hackathon 2026** — Telecom AI Track
+Solo Builder: Krisha Udayaprakash Poojari
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## The Problem
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+In June 2026, a building fire in New Delhi killed 21 people, including foreign nationals. Communication systems collapsed exactly when they were needed most — WiFi lost power, mobile networks became congested. SenseAI is built to solve exactly that failure: ensuring critical safety information reaches people even when telecom infrastructure fails during a crisis.
 
-## Expanding the ESLint configuration
+## Core Features
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **AI-Powered Building Risk Map** — Real Mumbai buildings scored on fire risk, with live Gemini AI-generated risk briefs (rule-based fallback included for reliability)
+- **Offline-First Evacuation Navigator** — Real floor plan (SIES GST, Mumbai), Dijkstra's algorithm routing, fully functional with zero internet connectivity
+- **Multi-Agency Real-Time Dispatch** — Live coordination between fire brigade, hospitals, and embassies via Firebase real-time sync
+
+## Tech Stack
+
+React (Vite) · Tailwind CSS · Firebase Firestore · Google Gemini API · React-Leaflet · Service Worker (PWA) · Vercel
+
+## Getting Started
+
+```bash
+npm install
+npm run dev
+```
+
+Create a `.env` file based on `.env.example` with your own Firebase and Gemini API keys.
+
+## AI Tools Disclosure
+
+- **Google Gemini API** — core product feature, live AI-generated risk assessments
+- **Claude (Anthropic)** — development and planning assistant during the build
+
+## License
+
+Built for educational and hackathon purposes.
